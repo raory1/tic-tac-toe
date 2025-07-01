@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700,900');
+
+:root{
+    --text: #AA644A;
+    --text-secondary: #FFFFFF;
+    --background: #efe9fc;
+    --primary: #AA644A;
+    --secondary: #7FA4A9;
+    --accent: #80224d;
+    --gray: #D3D5E4;
+    --alert: #B91919;
+}
+
+*,
+*:after,
+*:before {
+    font-family: 'Poppins';
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
