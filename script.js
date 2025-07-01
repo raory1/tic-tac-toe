@@ -31,17 +31,24 @@ function createPlayer(name, marker) {
 const gameController = (function () {
     const players = [createPlayer("Isa", "X"), createPlayer("Dani", "O")];
     let currentPlayer = players[0];
+
     const playRound = (row, column) => {
-        board.placeMarker(1, 2, currentPlayer.marker);
+        board.placeMarker(row, column, currentPlayer.marker);
+        switchPlayer();
     };
 
+    const switchPlayer = () => {
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+    };
     return { playRound };
 })();
 
 const board = Gameboard();
 
-board.placeMarker(0, 1, 2);
 console.log(board.getBoard());
 
-gameController.playRound(1,2);
+gameController.playRound(1, 2);
+gameController.playRound(0, 2);
+gameController.playRound(1, 0);
+gameController.playRound(0, 0);
 console.log(board.getBoard());
