@@ -9,11 +9,26 @@ function Gameboard() {
             board[i].push(0);
         }
     }
-    console.log(board);
+
+    const getBoard = () => board;
+
+    const placeMarker = (row, col, marker) => {
+        if (board[row][col] === 0) {
+            board[row][col] = marker;
+            return true;
+        }
+        console.log("a casa está ocupada");
+        return false;
+    };
+    return { getBoard, placeMarker };
 }
 
-function createPlayer(name, marker){
-    return {name, marker}
+function createPlayer(name, marker) {
+    return { name, marker };
 }
 
-Gameboard();
+const board = Gameboard();
+
+board.placeMarker(0, 1, 2);
+console.log(board.getBoard());
+
