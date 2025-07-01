@@ -14,11 +14,9 @@ function Gameboard() {
 
     const placeMarker = (row, col, marker) => {
         if (board[row][col] === 0) {
-            console.log("marcador adicionado");
             board[row][col] = marker;
             return true;
         }
-        console.log("a casa está ocupada");
         return false;
     };
 
@@ -68,7 +66,11 @@ const gameController = (function () {
     let currentPlayer = players[0];
 
     const playRound = (row, column) => {
-        board.placeMarker(row, column, currentPlayer.marker);
+        const sucess = board.placeMarker(row, column, currentPlayer.marker);
+        if (!sucess) {
+            console.log("ei, essa casa já está ocupada!");
+            return;
+        }
         const hasWinner = board.checkWinner();
         if (!hasWinner) {
             switchPlayer();
@@ -92,9 +94,7 @@ gameController.playRound(1, 2);
 gameController.playRound(0, 2);
 gameController.playRound(1, 0);
 gameController.playRound(0, 0);
-gameController.playRound(0, 1);
-gameController.playRound(1, 1);
-gameController.playRound(2, 1);
-gameController.playRound(2, 2);
+gameController.playRound(2, 0);
+gameController.playRound(2, 0);
 
 console.log(board.getBoard());
