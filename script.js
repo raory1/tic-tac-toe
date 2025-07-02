@@ -1,4 +1,4 @@
-function Gameboard() {
+const Gameboard = (function () {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -55,23 +55,21 @@ function Gameboard() {
         return 0;
     };
     return { getBoard, placeMarker, checkWinner };
-}
+})();
 
-function createPlayer(name, marker) {
-    return { name, marker };
-}
+const GameController = (function () {
+    const createPlayer = (name, marker) => ({ name, marker });
 
-const gameController = (function () {
     const players = [createPlayer("Isa", "X"), createPlayer("Dani", "O")];
     let currentPlayer = players[0];
 
     const playRound = (row, column) => {
-        const sucess = board.placeMarker(row, column, currentPlayer.marker);
+        const sucess = Gameboard.placeMarker(row, column, currentPlayer.marker);
         if (!sucess) {
             console.log("ei, essa casa já está ocupada!");
             return;
         }
-        const hasWinner = board.checkWinner();
+        const hasWinner = board.checkWinner;
         if (!hasWinner) {
             switchPlayer();
         } else {
@@ -86,13 +84,13 @@ const gameController = (function () {
     return { playRound };
 })();
 
-function ScreenController() {
-    const game = gameController;
+const ScreenController = (function () {
+    const game = GameController;
     const boardDiv = document.querySelector("#board");
 
     const updateScreen = () => {
         boardDiv.textContent = "";
-        const board = Gameboard().getBoard();
+        const board = Gameboard.getBoard();
         board.forEach((row, i) => {
             row.forEach((cell, j) => {
                 const cellBtn = document.createElement("button");
@@ -108,21 +106,15 @@ function ScreenController() {
     };
 
     const clickHandler = (e) => {
-        const row = e.target.dataset.row
-        const column = e.target.dataset.column
-        game.playRound(row, column)
+        const row = e.target.dataset.row;
+        const column = e.target.dataset.column;
+        game.playRound(row, column);
 
         updateScreen();
     };
 
-    boardDiv.addEventListener("click", clickHandler)
+    boardDiv.addEventListener("click", clickHandler);
     updateScreen();
 
     return { updateScreen, clickHandler };
-}
-const board = Gameboard();
-console.log(board);
-
-
-console.log(board.getBoard());
-ScreenController().updateScreen();
+})();
