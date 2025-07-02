@@ -86,9 +86,35 @@ const gameController = (function () {
     return { playRound };
 })();
 
-const board = Gameboard();
+function ScreenController() {
+    const game = gameController;
+    const boardDiv = document.querySelector("#board");
 
-console.log(board.getBoard());
+    const updateScreen = () => {
+        boardDiv.textContent = "";
+        const board = Gameboard().getBoard();
+        board.forEach((row, i) => {
+            row.forEach((cell, j) => {
+                const cellBtn = document.createElement("button");
+                cellBtn.classList.add("cell");
+                cellBtn.textContent = cell;
+
+                cellBtn.dataset.row = i;
+                cellBtn.dataset.column = j;
+
+                boardDiv.append(cellBtn);
+            });
+        });
+    };
+
+    const clickHandler = () => {};
+    
+    updateScreen();
+
+    return { updateScreen, clickHandler };
+}
+const board = Gameboard();
+console.log(board);
 
 gameController.playRound(1, 2);
 gameController.playRound(0, 2);
@@ -98,3 +124,4 @@ gameController.playRound(2, 0);
 gameController.playRound(2, 0);
 
 console.log(board.getBoard());
+ScreenController().updateScreen();
