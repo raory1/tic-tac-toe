@@ -59,11 +59,13 @@ const Gameboard = (function () {
 
 const GameController = (function () {
     const createPlayer = (name, marker) => ({ name, marker });
+    let isGameOver = false;
 
     const players = [createPlayer("Isa", "X"), createPlayer("Dani", "O")];
     let currentPlayer = players[0];
 
     const playRound = (row, column) => {
+        // if (isGameOver) return;
         const sucess = Gameboard.placeMarker(row, column, currentPlayer.marker);
         if (!sucess) {
             console.log("ei, essa casa já está ocupada!");
@@ -73,12 +75,17 @@ const GameController = (function () {
         if (!hasWinner) {
             switchPlayer();
         } else {
-            console.log(`${currentPlayer.name} venceu!`);
+            gameEnd();
         }
     };
 
     const switchPlayer = () => {
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+    };
+
+    const gameEnd = () => {
+        isGameOver = true;
+        ScreenController.showWinner(currentPlayer.name);
     };
 
     return { playRound };
@@ -113,8 +120,15 @@ const ScreenController = (function () {
         updateScreen();
     };
 
+    const showWinner = (playerName) => {
+        boardDiv.removeEventListener("click", clickHandler)
+        const winnerText = document.createElement("p");
+        winnerText.textContent = playerName;
+        document.body.append(winnerText);
+    };
+
     boardDiv.addEventListener("click", clickHandler);
     updateScreen();
 
-    return { updateScreen, clickHandler };
+    return { updateScreen, clickHandler, showWinner };
 })();
