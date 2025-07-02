@@ -69,7 +69,7 @@ const GameController = (function () {
             console.log("ei, essa casa já está ocupada!");
             return;
         }
-        const hasWinner = board.checkWinner;
+        const hasWinner = Gameboard.checkWinner();
         if (!hasWinner) {
             switchPlayer();
         } else {
