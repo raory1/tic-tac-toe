@@ -107,8 +107,15 @@ function ScreenController() {
         });
     };
 
-    const clickHandler = () => {};
-    
+    const clickHandler = (e) => {
+        const row = e.target.dataset.row
+        const column = e.target.dataset.column
+        game.playRound(row, column)
+
+        updateScreen();
+    };
+
+    boardDiv.addEventListener("click", clickHandler)
     updateScreen();
 
     return { updateScreen, clickHandler };
@@ -116,12 +123,6 @@ function ScreenController() {
 const board = Gameboard();
 console.log(board);
 
-gameController.playRound(1, 2);
-gameController.playRound(0, 2);
-gameController.playRound(1, 0);
-gameController.playRound(0, 0);
-gameController.playRound(2, 0);
-gameController.playRound(2, 0);
 
 console.log(board.getBoard());
 ScreenController().updateScreen();
