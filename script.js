@@ -56,6 +56,14 @@ const Gameboard = (function () {
         ) {
             return 1;
         }
+
+        const isBoardFull = board.every((row) =>
+            row.every((cell) => cell !== 0)
+        );
+        if (isBoardFull) {
+            return 2;
+        }
+
         return 0;
     };
 
@@ -80,11 +88,12 @@ const GameController = (function () {
             console.log("ei, essa casa já está ocupada!");
             return;
         }
+
         const hasWinner = Gameboard.checkWinner();
-        if (!hasWinner) {
+        if (hasWinner === 0) {
             switchPlayer();
             ScreenController.updateScreen();
-        } else {
+        } else if (hasWinner === 1 || hasWinner === 2) {
             gameEnd();
         }
     };
