@@ -23,30 +23,44 @@
 }
 
 body {
-  font-family: sans-serif;
+  background-color: var(--background);
+  color: var(--text-secondary);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f9f9f9;
+  justify-content: center;
+  height: 100vh;
 }
 
 h1 {
-  margin-top: 40px;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+button {
+  background-color: var(--primary);
+  color: var(--text-secondary);
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 #board {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   margin-top: 20px;
 }
 
 .cell {
   width: 100px;
   height: 100px;
-  background: rgb(184, 168, 168);
-  border: 2px solid #333;
+  background-color: var(--gray);
+  color: var(--text);
+  border: 2px solid var(--primary);
   font-size: 2rem;
   display: flex;
   align-items: center;
@@ -57,7 +71,7 @@ h1 {
 }
 
 .cell:hover {
-  background-color: #743030;
+  background-color: var(--secondary);
 }
 
 .cell:disabled{
@@ -66,8 +80,4 @@ h1 {
   background-color: #f0f0f0;
   color: #999;
   opacity: 0.6;
-}
-
-.cell:disabled:hover{
-  background-color: #f0f0f0;
 }
