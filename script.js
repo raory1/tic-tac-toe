@@ -65,7 +65,7 @@ const GameController = (function () {
     let currentPlayer = players[0];
 
     const playRound = (row, column) => {
-        // if (isGameOver) return;
+        if (isGameOver) return;
         const sucess = Gameboard.placeMarker(row, column, currentPlayer.marker);
         if (!sucess) {
             console.log("ei, essa casa já está ocupada!");
@@ -74,6 +74,7 @@ const GameController = (function () {
         const hasWinner = Gameboard.checkWinner();
         if (!hasWinner) {
             switchPlayer();
+            ScreenController.updateScreen();
         } else {
             gameEnd();
         }
@@ -88,7 +89,10 @@ const GameController = (function () {
         ScreenController.showWinner(currentPlayer.name);
     };
 
-    return { playRound };
+    const getIsGameOver = () => isGameOver;
+
+
+    return { playRound, getIsGameOver };
 })();
 
 const ScreenController = (function () {
@@ -102,11 +106,13 @@ const ScreenController = (function () {
             row.forEach((cell, j) => {
                 const cellBtn = document.createElement("button");
                 cellBtn.classList.add("cell");
-                cellBtn.textContent = cell;
-
+                cellBtn.textContent = cell !== 0 ? cell : "";
                 cellBtn.dataset.row = i;
                 cellBtn.dataset.column = j;
 
+                if (game.getIsGameOver() || cell !== 0) {
+                    cellBtn.disabled = true;
+                } 
                 boardDiv.append(cellBtn);
             });
         });
@@ -121,10 +127,12 @@ const ScreenController = (function () {
     };
 
     const showWinner = (playerName) => {
-        boardDiv.removeEventListener("click", clickHandler)
+        boardDiv.removeEventListener("click", clickHandler);
         const winnerText = document.createElement("p");
         winnerText.textContent = playerName;
         document.body.append(winnerText);
+
+        updateScreen();
     };
 
     boardDiv.addEventListener("click", clickHandler);
