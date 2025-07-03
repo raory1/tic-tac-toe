@@ -3,12 +3,16 @@ const Gameboard = (function () {
     const columns = 3;
     const board = [];
 
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-            board[i].push(0);
+    const initializeBoard = () => {
+        for (let i = 0; i < rows; i++) {
+            board[i] = [];
+            for (let j = 0; j < columns; j++) {
+                board[i][j] = 0;
+            }
         }
-    }
+    };
+
+    initializeBoard();
 
     const getBoard = () => board;
 
@@ -54,7 +58,12 @@ const Gameboard = (function () {
         }
         return 0;
     };
-    return { getBoard, placeMarker, checkWinner };
+
+    const resetBoard = () => {
+        initializeBoard();
+    };
+
+    return { getBoard, placeMarker, checkWinner, resetBoard };
 })();
 
 const GameController = (function () {
@@ -91,8 +100,13 @@ const GameController = (function () {
 
     const getIsGameOver = () => isGameOver;
 
+    const resetGame = () => {
+        isGameOver = false;
+        currentPlayer = players[0];
+        Gameboard.resetBoard();
+    };
 
-    return { playRound, getIsGameOver };
+    return { playRound, getIsGameOver, resetGame };
 })();
 
 const ScreenController = (function () {
@@ -112,7 +126,7 @@ const ScreenController = (function () {
 
                 if (game.getIsGameOver() || cell !== 0) {
                     cellBtn.disabled = true;
-                } 
+                }
                 boardDiv.append(cellBtn);
             });
         });
@@ -122,7 +136,6 @@ const ScreenController = (function () {
         const row = e.target.dataset.row;
         const column = e.target.dataset.column;
         game.playRound(row, column);
-
         updateScreen();
     };
 
@@ -132,6 +145,16 @@ const ScreenController = (function () {
         winnerText.textContent = playerName;
         document.body.append(winnerText);
 
+        const restartBtn = document.createElement("button");
+        restartBtn.textContent = "Reiniciar Jogo";
+        document.body.append(restartBtn);
+        restartBtn.addEventListener("click", () => {
+            document.body.removeChild(winnerText);
+            document.body.removeChild(restartBtn);
+            game.resetGame();
+            boardDiv.addEventListener("click", clickHandler);
+            updateScreen();
+        });
         updateScreen();
     };
 
